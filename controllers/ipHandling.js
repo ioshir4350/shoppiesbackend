@@ -1,5 +1,4 @@
 const { networkInterfaces } = require('os');
-const md5 = require('md5')
 
 const getLocalIP = () => {
     const nets = networkInterfaces();
