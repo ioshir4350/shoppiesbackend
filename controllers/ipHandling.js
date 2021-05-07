@@ -13,7 +13,7 @@ const getLocalIP = () => {
                 }
     
                 results[name].push(net.address);
-                return md5(net.address)
+                return net.address
             }
         }
     }
