@@ -2,6 +2,7 @@ const express = require("express")
 const bodyParser = require('body-parser')
 
 const nominationRoutes = require('./routes/nomination')
+const authRoutes = require('./routes/auth')
 
 const app = express()
 
@@ -29,5 +30,6 @@ const connectDB = async()=>{
 connectDB()
 
 app.use('/api/nomination', nominationRoutes)
+app.use('/api/auth', authRoutes)
 
 app.listen(process.env.PORT)

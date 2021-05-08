@@ -1,14 +1,15 @@
 const axios = require('axios')
-const ipHandling = require('./ipHandling')
 const User = require('../models/User')
 
 function nominate(req, res){
+    
     const movieID = req.body.movieID
-    const IP4 = ipHandling.getLocalIP()
-    User.findOne({ipAddress: IP4}, (err, foundUser) => {
+
+    const email = req.body.email
+    
+    User.findOne({email: email}, (err, foundUser) => {
         if (err) console.log(err);
         else{
-            if (foundUser){
                 if (foundUser.nominations.includes(movieID)){
                     res.json({'status': 'already nominated'})
                 }
@@ -17,23 +18,14 @@ function nominate(req, res){
                     foundUser.save()
                     res.json({'status': 'foundUser'})
                 }
-            }
-            else{
-                const newUser = new User({
-                    ipAddress: IP4,
-                    nominations: [movieID]
-                })
-                newUser.save()
-                res.json({'status': 'registeredUser'})
-            }
         }
     })
 }
 
 function remove(req, res){
     const movieID = req.body.movieID
-    const IP4 = ipHandling.getLocalIP()
-    User.findOne({ipAddress: IP4}, (err, foundUser) => {
+    const email = req.body.email
+    User.findOne({email: email}, (err, foundUser) => {
         if (err) console.log(err);
         else{
             foundUser.nominations.splice(foundUser.nominations.indexOf(movieID), 1)
@@ -44,8 +36,9 @@ function remove(req, res){
 }
 
 function getNominations(req, res){
-    const IP4 = ipHandling.getLocalIP()
-    User.findOne({ipAddress: IP4}, async (err, foundUser) => {
+    const email = req.params.email
+    console.log(email);
+    User.findOne({email: email}, async (err, foundUser) => {
         if (err) console.log(err);
         else{
             if (foundUser) {
